@@ -3,7 +3,7 @@
 import test from 'ava'
 
 import { $ } from '../lib/selector.js'
-import { addClass, removeClass, chain } from '../lib/manipulation.js'
+import { addClass, removeClass, css, chain } from '../lib/manipulation.js'
 
 test.beforeEach(() => { document.body.innerHTML = '' })
 
@@ -60,6 +60,49 @@ test('removeClass removes a given class from the list of an elements classes', t
   removeClass(element, 'some-class')
 
   t.is(element.className, 'some-other')
+})
+
+/**
+ * css
+ */
+
+test('css function is specified', t => {
+  t.is(typeof css, 'function')
+})
+
+test('css retrieves property values, if no value is set', t => {
+  document.body.innerHTML = `
+    <div id="element" style="display:inline"></div>
+  `
+
+  const element = $('#element')
+
+  t.is(css(element, 'display'), 'inline')
+})
+
+test('css resets property values, if empty string is given', t => {
+  document.body.innerHTML = `
+    <div id="element" style="display:inline"></div>
+  `
+
+  const element = $('#element')
+  css(element, 'display', '')
+
+  t.is(css(element, 'display'), 'block')
+})
+
+test('css sets property values, if an actual value is given', t => {
+  document.body.innerHTML = `
+    <div id="element" style="height:50px">Some Content</div>
+  `
+
+  const element = $('#element')
+
+  css(element, 'border', '1px solid red')
+  t.is(css(element, 'border'), '1px solid red')
+
+  css(element, 'height', 0)
+  t.is(css(element, 'height'), '0px')
 })
 
 /**
