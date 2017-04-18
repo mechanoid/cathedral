@@ -2,7 +2,7 @@
 
 import test from 'ava'
 
-import { $, $$, children } from '../lib/selector.js'
+import { $, $$, find, findAll, children } from '../lib/selector.js'
 
 test.beforeEach(() => { document.body.innerHTML = '' })
 
@@ -24,6 +24,21 @@ test('$ retrieves a single dom item', t => {
   t.is($('.part-of-many').outerHTML, '<div class="part-of-many"></div>')
 })
 
+test('$ retrieves sub results based on find, if a context is given', t => {
+  document.body.innerHTML = `
+    <div id="parent" style="display:inline">
+      <div id="child"></div>
+    </div>
+  `
+
+  const parent = $('#parent')
+  const child = $('#child')
+
+  // check $ context search based on find
+  t.truthy($('#child', '#parent') === child)
+  t.truthy($('#child', parent) === child)
+})
+
 /**
  * $$
  */
@@ -42,10 +57,68 @@ test('$$ retrieves an array of dom elements', t => {
   t.is($$('.part-of-many').length, 2)
 })
 
+test('$$ retrieves sub results based on findAll, if a context is given', t => {
+  document.body.innerHTML = `
+    <div id="parent" style="display:inline">
+      <div class="child"></div>
+      <div class="child"></div>
+      <div class="child"></div>
+    </div>
+  `
+
+  const parent = $('#parent')
+
+  // check $$ context search based on findAll
+  t.is($$('.child', '#parent').length, 3)
+  t.is($$('.child', parent).length, 3)
+})
+/**
+ * find
+ */
+
+test('find function is specified', t => {
+  t.is(typeof find, 'function')
+})
+
+test('find function is specified', t => {
+  document.body.innerHTML = `
+    <div id="parent" style="display:inline">
+      <div id="child"></div>
+    </div>
+  `
+
+  const parent = $('#parent')
+  const child = $('#child')
+
+  t.truthy(find(parent, '#child') === child)
+})
+
+/**
+ * findAll
+ */
+
+test('find function is specified', t => {
+  t.is(typeof findAll, 'function')
+})
+
+test('find function is specified', t => {
+  document.body.innerHTML = `
+    <div id="parent" style="display:inline">
+      <div class="child"></div>
+      <div class="child"></div>
+      <div class="child"></div>
+    </div>
+  `
+
+  const parent = $('#parent')
+
+  t.truthy(findAll(parent, '.child') instanceof Array)
+  t.is(findAll(parent, '.child').length, 3)
+})
+
 /**
  * children
  */
-
 test('children function is specified', t => {
   t.is(typeof children, 'function')
 })
