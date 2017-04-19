@@ -2,7 +2,7 @@
 
 import test from 'ava'
 
-import { $ } from '../lib/selector.js'
+import { $ } from '../lib/traversal.js'
 import { addClass, removeClass, css, chain } from '../lib/manipulation.js'
 
 test.beforeEach(() => { document.body.innerHTML = '' })
