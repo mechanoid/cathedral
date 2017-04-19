@@ -2,7 +2,7 @@
 
 import test from 'ava'
 
-import { $, $$, find, findAll, children } from '../lib/selector.js'
+import { $, $$, find, findAll, children } from '../lib/traversal.js'
 
 test.beforeEach(() => { document.body.innerHTML = '' })
 
