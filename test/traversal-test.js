@@ -3,6 +3,7 @@
 import test from 'ava'
 
 import { $, $$, find, findAll, children } from '../lib/traversal.js'
+import { CathedralError } from '../lib/cathedral-error.js'
 
 test.beforeEach(() => { document.body.innerHTML = '' })
 
@@ -37,6 +38,45 @@ test('$ retrieves sub results based on find, if a context is given', t => {
   // check $ context search based on find
   t.truthy($('#child', '#parent') === child)
   t.truthy($('#child', parent) === child)
+})
+
+test('$ retrieves sub results based on find, if a context is given', t => {
+  document.body.innerHTML = `
+    <div id="parent" style="display:inline">
+      <div id="child"></div>
+    </div>
+  `
+
+  const parent = $('#parent')
+  const child = $('#child')
+
+  // check $ context search based on find
+  t.truthy($('#child', '#parent') === child)
+  t.truthy($('#child', parent) === child)
+})
+
+test('$ creates and returns an HTML Element, if an HTML fragment string is given', t => {
+  const htmlFragment = '<div>Fubar</div>'
+  const newElement = $(htmlFragment)
+
+  t.is(newElement.outerHTML, htmlFragment)
+})
+
+test('$ returns only first node of given fragment string', t => {
+  const htmlFragment = `
+    <div>Fubar</div>
+    <div>Fubar</div>
+  `
+  const newElement = $(htmlFragment)
+
+  t.is(newElement.outerHTML, '<div>Fubar</div>')
+})
+
+test('$ works for nested html', t => {
+  const htmlFragment = `<div>Fubar<div>Falala</div></div>`
+  const newElement = $(htmlFragment)
+
+  t.is(newElement.outerHTML, htmlFragment)
 })
 
 /**
