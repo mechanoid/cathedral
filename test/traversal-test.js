@@ -97,11 +97,11 @@ test('find function is specified', t => {
  * findAll
  */
 
-test('find function is specified', t => {
+test('findAll function is specified', t => {
   t.is(typeof findAll, 'function')
 })
 
-test('find function is specified', t => {
+test('findAll function is specified', t => {
   document.body.innerHTML = `
     <div id="parent" style="display:inline">
       <div class="child"></div>
