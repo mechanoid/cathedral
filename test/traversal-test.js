@@ -3,7 +3,6 @@
 import test from 'ava'
 
 import { $, $$, find, findAll, children } from '../lib/traversal.js'
-import { CathedralError } from '../lib/cathedral-error.js'
 
 test.beforeEach(() => { document.body.innerHTML = '' })
 
